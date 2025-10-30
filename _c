@@ -1,0 +1,17 @@
+#compdef c
+
+local -a keys
+if typeset -A BOOKMARKS &>/dev/null; then
+  keys=(${(k)BOOKMARKS})
+fi
+
+_arguments -C '*:targets:->target'
+
+case $state in
+  target)
+    _alternative \
+      'bookmarks:bookmark:( '${(j: :)keys}' )' \
+      'directories:directory:_files -/' \
+      && return
+  ;;
+esac

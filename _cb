@@ -1,0 +1,25 @@
+#compdef cb
+
+local -a subcmds
+subcmds=('ls:List bookmarks' 'add:Add a bookmark' 'rm:Remove a bookmark')
+
+local -a keys
+if typeset -A BOOKMARKS &>/dev/null; then
+  keys=(${(k)BOOKMARKS})
+fi
+
+_arguments -C \
+  '1:subcommand:((ls add rm))' \
+  '2:key:->key' \
+  '3:path:_files -/' \
+  '*:: :->args'
+
+case $state in
+  key)
+    if [[ $words[2] == rm ]]; then
+      _values 'bookmark key' $keys
+    else
+      _message 'key'
+    fi
+  ;;
+esac
